@@ -14,6 +14,11 @@ module.exports = {
     'prettier/prettier': 'error',
     'class-methods-use-this': 'off',
     'import/prefer-default-export': 'off',
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-constructor': ['error'],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'no-empty-function': ['error', { allow: ['constructors'] }],
     'import/extensions': [
       'error',
       'ignorePackages',
