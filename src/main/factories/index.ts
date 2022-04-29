@@ -1,4 +1,3 @@
-import { loadContainerStatsFactory } from './loadContainerStatsFactory'
-import { loadRunningContainersFactory } from './loadRunningContainersFactory'
+import { collectContainersStatsFactory } from './collectContainersStatsFactory'
 
-export { loadContainerStatsFactory, loadRunningContainersFactory }
+export { collectContainersStatsFactory }
