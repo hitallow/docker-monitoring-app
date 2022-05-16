@@ -13,22 +13,19 @@ export class LoadContainerStats implements LoadContainerStatsContract {
 
           const stats = JSON.parse(stdout)
 
-          const fields = [
-            ['ID', 'id'],
-            ['PIDs', 'pids'],
-            ['Name', 'name'],
-            ['MemPerc', 'memoryPercent'],
-            ['CPUPerc', 'cpuPercent'],
-            ['MemUsage', 'memoryUsage'],
-            ['NetIO', 'networkIO'],
-            ['BlockIO', 'blockIO'],
-          ]
+          const containerStats: ContainerStats = {} as ContainerStats
 
-          const containerStats: ContainerStats = fields.reduce(
-            (acc, [key, value]) => ({ ...acc, [value]: stats[key] }),
-            {} as ContainerStats
-          )
-
+          containerStats.id = stats.ID
+          containerStats.pids = stats.PIDs
+          containerStats.name = stats.Name
+          ;[containerStats.memoryUsage, containerStats.memoryLimit] =
+            stats.MemUsage.split(' / ')
+          containerStats.memoryPercent = stats.MemPerc.replace('%', '')
+          containerStats.cpuPercent = stats.CPUPerc.replace('%', '')
+          ;[containerStats.networdInput, containerStats.networkOutput] =
+            stats.NetIO.split(' / ')
+          ;[containerStats.blockInput, containerStats.blockOutput] =
+            stats.BlockIO.split(' / ')
           containerStats.timestamp = Math.floor(Date.now() / 1000)
 
           return resolve(containerStats)

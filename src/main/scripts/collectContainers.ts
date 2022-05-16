@@ -1,11 +1,13 @@
+import { logger } from '@src/services/helpers/logger/logger'
 import { collectContainersStatsFactory } from '../factories'
 
 const collectInformations = () => {
   const collectContainersStatsUsecase = collectContainersStatsFactory()
 
   setInterval(() => {
-    console.log('Coletando dados...')
+    logger.info('Coletando dados...')
     collectContainersStatsUsecase.execute()
+    // TODO: testar diminuindo o tempo
   }, 5000)
 }
 

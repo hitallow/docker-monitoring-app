@@ -5,7 +5,10 @@ export interface ContainerStats {
   memoryPercent: string
   cpuPercent: string
   memoryUsage: string
-  networkIO: string
-  blockIO: string
+  memoryLimit: string
   timestamp: number
+  networdInput: string
+  networkOutput: string
+  blockInput: string
+  blockOutput: string
 }

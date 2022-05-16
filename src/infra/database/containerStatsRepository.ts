@@ -18,6 +18,18 @@ class ContainerStatsRepository implements ContainerStatsRepositoryContract {
     }
     writeFileSync(PATH_LOG, JSON.stringify(content, null, 2))
   }
+
+  public async loadContainerStats(
+    containerId: string
+  ): Promise<ContainerStats[]> {
+    const rawData = readFileSync(PATH_LOG)
+    const content = JSON.parse(rawData.toString())
+    const stats = content.stats[containerId]
+    if (!stats) {
+      return []
+    }
+    return stats
+  }
 }
 
 export { ContainerStatsRepository }
