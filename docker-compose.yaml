@@ -1,0 +1,22 @@
+version: '3'
+
+
+services:
+  database:
+    image: mongo
+    container_name: 'docker-monitoring-database'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MONGO_INITDB_DATABASE='docker-monitoring'
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-volume:/data/db
+    restart: always
+    networks:
+      - monitoring-app
+
+networks: 
+    monitoring-app:
+      driver: bridge
