@@ -15,7 +15,7 @@ export class LoadContainerStats implements LoadContainerStatsContract {
 
           const containerStats: ContainerStats = {} as ContainerStats
 
-          containerStats.id = stats.ID
+          containerStats.containerId = stats.ID
           containerStats.pids = stats.PIDs
           containerStats.name = stats.Name
           ;[containerStats.memoryUsage, containerStats.memoryLimit] =

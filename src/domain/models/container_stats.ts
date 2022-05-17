@@ -1,5 +1,5 @@
 export interface ContainerStats {
-  id: string
+  containerId: string
   pids: number
   name: string
   memoryPercent: string
