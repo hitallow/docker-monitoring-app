@@ -1,5 +1,6 @@
 import { ContainerStats } from '@src/domain'
 import { LoadContainerStatsContract } from '@src/services/contracts'
+import { convertUnits } from '@src/services/helpers/convertUnits/convertUnits'
 import { exec } from 'child_process'
 
 export class LoadContainerStats implements LoadContainerStatsContract {
@@ -19,13 +20,13 @@ export class LoadContainerStats implements LoadContainerStatsContract {
           containerStats.pids = stats.PIDs
           containerStats.name = stats.Name
           ;[containerStats.memoryUsage, containerStats.memoryLimit] =
-            stats.MemUsage.split(' / ')
+            stats.MemUsage.split(' / ').map(convertUnits)
           containerStats.memoryPercent = stats.MemPerc.replace('%', '')
           containerStats.cpuPercent = stats.CPUPerc.replace('%', '')
           ;[containerStats.networdInput, containerStats.networkOutput] =
-            stats.NetIO.split(' / ')
+            stats.NetIO.split(' / ').map(convertUnits)
           ;[containerStats.blockInput, containerStats.blockOutput] =
-            stats.BlockIO.split(' / ')
+            stats.BlockIO.split(' / ').map(convertUnits)
           containerStats.timestamp = Math.floor(Date.now() / 1000)
 
           return resolve(containerStats)
