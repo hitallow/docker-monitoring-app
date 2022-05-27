@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import { logger } from '@src/services/helpers/logger/logger'
 import { MongoClient } from 'mongodb'
 
@@ -12,8 +14,7 @@ const getDatabase = async () => {
 
   await client.connect()
   logger.info('Connected to database')
-  const db = client.db('docker-monitoring')
-  return db
+  return client.db('docker-monitoring')
 }
 
 export { getDatabase }
