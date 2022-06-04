@@ -19,6 +19,7 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     'no-empty-function': ['error', { allow: ['constructors'] }],
+    'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'import/extensions': [
       'error',
       'ignorePackages',
