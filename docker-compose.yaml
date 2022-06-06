@@ -1,10 +1,9 @@
 version: '3'
 
-
 services:
   database:
     image: mongo
-    container_name: 'docker-monitoring-database'
+    container_name: 'app-database'
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
@@ -16,7 +15,41 @@ services:
     restart: always
     networks:
       - monitoring-app
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+  worker:
+    build: ./docker/worker
+    container_name: bull-worker
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - .:/usr/project/worker
+    environment:
+      - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
+    links:
+      - redis
+      - database
+    depends_on:
+      - database
+    
 
-networks: 
-    monitoring-app:
-      driver: bridge
+  app:
+    build: ./docker/api
+    container_name: app
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - .:/usr/project/app
+    ports:
+      - "3000:3000"
+    links:
+      - redis
+      - database
+  # expose:
+  #   - "6379"
+
+networks:
+  monitoring-app:
+    driver: bridge
