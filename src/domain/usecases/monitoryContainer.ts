@@ -1,3 +1,5 @@
+import { UsecaseContract } from './usecaseContract'
+
 interface MonitoryContainerParams {
   containerId: string
   experimentId: string
@@ -5,7 +7,8 @@ interface MonitoryContainerParams {
   frequency: number
 }
 
-interface MonitoryContainerUsecaseContract {
+interface MonitoryContainerUsecaseContract
+  extends UsecaseContract<MonitoryContainerParams> {
   execute(params: MonitoryContainerParams): Promise<boolean>
 }
 
