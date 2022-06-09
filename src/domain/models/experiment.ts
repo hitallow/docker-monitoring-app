@@ -6,5 +6,6 @@ export interface Experiment {
   description: string
   startAt: number
   endAt: number
+  status: string
   containerStats: ContainerStats[]
 }
