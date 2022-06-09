@@ -1,3 +1,4 @@
 import { ContainerStatsRepository } from './repositories/containerStatsRepository'
+import { ExperimentRepository } from './repositories/experimentRepository'
 
-export { ContainerStatsRepository }
+export { ContainerStatsRepository, ExperimentRepository }

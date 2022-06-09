@@ -1,8 +1,7 @@
-import { Db, Collection } from 'mongodb'
+import { Db, Collection, ObjectId } from 'mongodb'
 
 import { ExperimentRepositoryContract } from '@src/services/contracts'
 import { Experiment, ContainerStats } from '@src/domain'
-import { logger } from '@src/services/helpers/logger/logger'
 import { ExperimentNotFoundError } from '@src/services/errors/experimentNotFoundError'
 
 class ExperimentRepository implements ExperimentRepositoryContract {
@@ -15,7 +14,10 @@ class ExperimentRepository implements ExperimentRepositoryContract {
   }
 
   async addStats(experimentId: string, stats: ContainerStats): Promise<void> {
-    logger.info('Adding stats to experiment', { experimentId, stats })
+    this.collection.updateOne(
+      { _id: new ObjectId(experimentId) },
+      { $push: { containerStats: stats } }
+    )
   }
 
   public async getExperiment(id: string): Promise<Experiment> {
@@ -29,6 +31,16 @@ class ExperimentRepository implements ExperimentRepositoryContract {
   async createExperiment(experiment: Experiment): Promise<Experiment> {
     const ret = await this.collection.insertOne(experiment)
     return { ...experiment, id: ret.insertedId.toString() }
+  }
+
+  async updateExperiment(
+    experimentId: string,
+    values: Omit<Partial<Experiment>, 'id' | 'containerStats'>
+  ): Promise<void> {
+    this.collection.updateOne(
+      { _id: new ObjectId(experimentId) },
+      { $set: values }
+    )
   }
 }
 
