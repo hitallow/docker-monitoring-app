@@ -6,7 +6,7 @@ import { MongoClient } from 'mongodb'
 const getDatabase = async () => {
   const username = process.env.DATABASE_USERNAME
   const password = process.env.DATABASE_PASSWORD
-  const url = 'mongodb://localhost:27017'
+  const url = 'mongodb://app-database:27017'
 
   const client = new MongoClient(url, {
     auth: { username, password },
