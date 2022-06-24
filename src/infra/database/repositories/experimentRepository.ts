@@ -21,7 +21,9 @@ class ExperimentRepository implements ExperimentRepositoryContract {
   }
 
   public async getExperiment(id: string): Promise<Experiment> {
-    const experiment = await this.collection.findOne({ id })
+    const experiment = await this.collection.findOne({
+      _id: new ObjectId(id),
+    })
     if (!experiment) {
       throw new ExperimentNotFoundError(id)
     }
