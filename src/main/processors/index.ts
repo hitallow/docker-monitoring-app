@@ -1,8 +1,14 @@
-import { MONITOR_CONTAINER_QUEUE } from '@src/infra/queues'
-import { monitoryContainer } from './monitoryContainer'
+import { ProcessCallbackFunction } from 'bull'
 
-const processors = {
-  [MONITOR_CONTAINER_QUEUE]: monitoryContainer,
+import { Queues } from '@src/services/enums'
+import { monitoryContainer } from './monitoryContainer'
+import { startMonitoring } from './startMonitoring'
+
+const processors: {
+  [key: string]: () => Promise<ProcessCallbackFunction<any>>
+} = {
+  [Queues.MONITOR_CONTAINER]: monitoryContainer,
+  [Queues.START_CONTAINER]: startMonitoring,
 }
 
 export { processors }
