@@ -8,4 +8,5 @@ export interface Experiment {
   endAt: number
   status: string
   containerStats: ContainerStats[]
+  stages: any[]
 }

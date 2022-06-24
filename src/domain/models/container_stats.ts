@@ -2,13 +2,14 @@ export interface ContainerStats {
   containerId: string
   pids: number
   name: string
-  memoryPercent: string
-  cpuPercent: string
-  memoryUsage: string
-  memoryLimit: string
+  memoryPercent: number
+  cpuPercent: number
+  memoryMaxUsage: number
+  memoryUsage: number
+  memoryLimit: number
   timestamp: number
-  networdInput: string
-  networkOutput: string
+  networdInput: number
+  networkOutput: number
   blockInput: string
   blockOutput: string
 }

@@ -8,8 +8,6 @@ interface MonitoryContainerParams {
 }
 
 interface MonitoryContainerUsecaseContract
-  extends UsecaseContract<MonitoryContainerParams> {
-  execute(params: MonitoryContainerParams): Promise<boolean>
-}
+  extends UsecaseContract<MonitoryContainerParams> {}
 
 export { MonitoryContainerUsecaseContract, MonitoryContainerParams }
