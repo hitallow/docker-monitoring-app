@@ -1,11 +1,14 @@
 import Queue, { Queue as Q } from 'bull'
+import { Queues } from '@src/services/enums/queues'
 
-export const MONITOR_CONTAINER_QUEUE = 'monitoryContainerQueue'
+const redisUrl = 'redis://redis:6379'
 
-const url = 'redis://redis:6379'
-
-const QueuesConfig: { [key: string]: Q<any> } = {
-  [MONITOR_CONTAINER_QUEUE]: new Queue(MONITOR_CONTAINER_QUEUE, url),
-}
+const QueuesConfig: { [key: string]: Q<any> } = Object.keys(Queues).reduce(
+  (configuredQueues, queueName) => ({
+    ...configuredQueues,
+    [Queues[queueName]]: Queue(Queues[queueName], redisUrl),
+  }),
+  {}
+)
 
 export { QueuesConfig }
