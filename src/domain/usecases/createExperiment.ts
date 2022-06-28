@@ -1,16 +1,16 @@
-import { ClassConstructor, plainToClass } from 'class-transformer'
 import {
   IsString,
   MaxLength,
-  IsNumber,
   IsEnum,
   IsInt,
   IsIn,
-  validate,
+  ArrayMinSize,
+  IsArray,
+  ValidateNested,
 } from 'class-validator'
 import { UsecaseContract } from './usecaseContract'
 
-enum StagesTypes {
+export enum StagesTypes {
   NORMAL = 'NORMAL',
   CPU_ANOMALY = 'CPU_ANOMALY',
   MEMORY_ANOMALY = 'MEMORY_ANOMALY',
@@ -21,20 +21,25 @@ export class NormalStageConfig {
   @IsInt({
     message: 'Frequency time must be an integer',
   })
-  frequencyTime: number
+  frequency: number
 
   @IsInt({
     message: 'Request rate must be an integer',
   })
-  requestRate: number
+  rate: number
 
   @IsIn(['fibonacci', 'factorial', 'lorem-ipsum'])
-  requestType: string
+  requestType: 'fibonacci' | 'factorial' | 'lorem-ipsum'
 
   @IsInt({
     message: 'Calculate value must be an integer',
   })
-  value?: number
+  value?: number = 100
+
+  @IsInt({
+    message: 'Calculate value must be an integer',
+  })
+  duration: number
 }
 
 export class CpuAnomalyConfig {
@@ -46,7 +51,7 @@ export class CpuAnomalyConfig {
 
 export class MemoryAnomalyConfig {
   @IsIn(['fast', 'slow', 'instant'])
-  increaseMode: string
+  increaseMode: 'fast' | 'slow' | 'instant'
 
   @IsInt()
   durationOfAlocation: number
@@ -62,44 +67,41 @@ export class MemoryAnomalyConfig {
   increaseRate: number
 }
 
-export class NetworkAnomalyConfig {}
+export class NetworkAnomalyConfig {
+  @IsIn(['input', 'output'])
+  mode: 'input' | 'output'
 
-class StageConfig {
-  @IsNumber(
-    { allowInfinity: false, allowNaN: false },
-    { message: 'Duration must be a number' }
-  )
+  @IsInt({
+    message: 'KB rate of each request must be an integer',
+  })
+  kbPerRate: number
+
+  @IsInt({
+    message: 'Request rate must be an integer',
+  })
+  rate: number
+
+  @IsInt({
+    message: 'Duration between must be an integer',
+  })
   duration: number
 
-  @IsEnum(StagesTypes, {
-    message: 'Stage type must be one of the following enum StagesTypes',
+  @IsInt({
+    message: 'Frequency time must be an integer',
   })
+  frequency: number
+}
+
+export class StageSetting {
+  @IsString({ message: 'Name must be a string' })
+  @IsEnum(StagesTypes)
   type: StagesTypes
 
-  setting: any
-
-  public async validStageConfig(): Promise<boolean> {
-    try {
-      let classConfig: ClassConstructor<any>
-
-      if (this.type === StagesTypes.CPU_ANOMALY) {
-        classConfig = CpuAnomalyConfig
-      } else if (this.type === StagesTypes.MEMORY_ANOMALY) {
-        classConfig = MemoryAnomalyConfig
-      } else if (this.type === StagesTypes.NORMAL) {
-        classConfig = NormalStageConfig
-      } else if (this.type === StagesTypes.NETWORK_ANOMALY) {
-        classConfig = NetworkAnomalyConfig
-      } else {
-        return false
-      }
-      await validate(plainToClass(classConfig, this.setting))
-
-      return true
-    } catch (error) {
-      return false
-    }
-  }
+  setting:
+    | CpuAnomalyConfig
+    | MemoryAnomalyConfig
+    | NormalStageConfig
+    | NetworkAnomalyConfig
 }
 
 class CreateExperimentParams {
@@ -111,7 +113,12 @@ class CreateExperimentParams {
   @MaxLength(255, { message: 'Description must be less than 255 characters' })
   description: string
 
-  stages: StageConfig[]
+  @ArrayMinSize(1, {
+    message: 'Stages must contain at least 1 elements',
+  })
+  @IsArray({ message: 'Stages must be a array' })
+  @ValidateNested({ each: true })
+  stages: StageSetting[]
 }
 
 interface CreateExperimentUsecaseContract
