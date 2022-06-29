@@ -17,6 +17,7 @@ export function bodyClassValidator<T>(
     try {
       const obj = plainToClass(model, req.body)
       await validateOrReject(obj as any)
+      req.body = obj
       next()
       return null
     } catch (error) {
