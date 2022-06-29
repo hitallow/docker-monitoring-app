@@ -27,6 +27,7 @@ services:
     container_name: bull-worker
     volumes:
       - /etc/localtime:/etc/localtime
+      - /var/run/docker.sock:/var/run/docker.sock
       - .:/usr/project/worker
     environment:
       - NODE_ENV=development
@@ -44,6 +45,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime
       - .:/usr/project/app
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "3000:3000"
     links:
@@ -51,7 +53,10 @@ services:
       - database
     networks:
       - monitoring-app
+      - app-anomaly
 
 networks:
   monitoring-app:
     driver: bridge
+  app-anomaly:
+    external: true
