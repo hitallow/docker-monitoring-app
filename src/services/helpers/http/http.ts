@@ -18,4 +18,13 @@ export class HttpStatus {
       statusCode: HttpStatusCode.NO_CONTENT,
     } as HttpResponse
   }
+
+  static badRequest(message: string): HttpResponse {
+    return {
+      statusCode: HttpStatusCode.BAD_REQUEST,
+      body: {
+        message,
+      },
+    } as HttpResponse
+  }
 }
