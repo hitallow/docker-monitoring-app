@@ -1,3 +1,3 @@
-import { currentTimestamp } from './getCurrentTimestamp'
-
-export { currentTimestamp }
+export { currentTimestamp } from './getCurrentTimestamp'
+export { startInterval } from './startInterval'
+export { generateRandomData } from './generateRandomData'
