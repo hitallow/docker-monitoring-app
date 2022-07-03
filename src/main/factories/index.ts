@@ -1,4 +1,5 @@
-import { collectContainersStatsFactory } from './collectContainersStatsFactory'
-import { monitoryContainerFactory } from './monitorContainerFactory'
-
-export { collectContainersStatsFactory, monitoryContainerFactory }
+export { collectContainersStatsFactory } from './collectContainersStatsFactory'
+export { monitoryContainerFactory } from './monitorContainerFactory'
+export { createExperimentFactory } from './createExperimentFactory'
+export { startMonitoringFactory } from './startMonitoringFactory'
+export { executeStageFactory } from './executeStageFactory'
