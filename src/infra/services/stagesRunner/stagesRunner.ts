@@ -92,20 +92,21 @@ export class StagesRunner implements StepsRunnerContract {
     })
   }
 
-  async run(step: StageSetting): Promise<void> {
+  async execute(contianerName: string, step: StageSetting): Promise<void> {
     try {
+      this.baseURL = `http://${contianerName}:80`
       const { type, setting } = step
       if (type === StagesTypes.NORMAL) {
-        logger.info('executando normal')
+        logger.info('EXECUTANDO CASO NORMAL')
         await this.runNormalStage(setting as NormalStageConfig)
       } else if (type === StagesTypes.CPU_ANOMALY) {
-        logger.info('executando cpu usage')
+        logger.info('EXECUTANDO CASO DE CPU')
         await this.runCpuStage(setting as CpuAnomalyConfig)
       } else if (type === StagesTypes.MEMORY_ANOMALY) {
-        logger.info('executando memory')
+        logger.info('EXECUTANDO CASO DE MEMORIA')
         await this.runMemoryUsage(setting as MemoryAnomalyConfig)
       } else if (type === StagesTypes.NETWORK_ANOMALY) {
-        logger.info('executando network')
+        logger.info('EXECUTANDO CASO DE NETWORK')
         await this.runRetworkAnomaly(setting as NetworkAnomalyConfig)
       } else {
         throw new Error(`Config not found ${type}`)

@@ -1,11 +1,7 @@
-import { LoadContainerStats } from './loadContainerStats/loadContainerStats'
-import { LoadRunningContainers } from './loadRunningContainers/loadRunningContainers'
-import { AnalysisEngine } from './analysisEngine/analysisEngine'
-import { AnalyticalModel } from './analyticalModel/analyticalModel'
-
-export {
-  AnalysisEngine,
-  AnalyticalModel,
-  LoadContainerStats,
-  LoadRunningContainers,
-}
+export { LoadContainerStats } from './loadContainerStats/loadContainerStats'
+export { LoadRunningContainers } from './loadRunningContainers/loadRunningContainers'
+export { AnalysisEngine } from './analysisEngine/analysisEngine'
+export { AnalyticalModel } from './analyticalModel/analyticalModel'
+export { TaskService } from './taskService/taskService'
+export { DockerService } from './dockerService/dockerService'
+export { StagesRunner } from './stagesRunner/stagesRunner'
