@@ -1,4 +1,7 @@
 export interface TaskConfig {
+  /**
+   * delay to execute the task in milliseconds
+   */
   delay: number
 }
 export interface TaskServiceContract {
