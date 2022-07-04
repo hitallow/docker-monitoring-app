@@ -2,6 +2,7 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     "suppressImplicitAnyIndexErrors": true,
+    "experimentalDecorators": true,
     "target": "es2016",
     "module": "commonjs",
     "esModuleInterop": true,
