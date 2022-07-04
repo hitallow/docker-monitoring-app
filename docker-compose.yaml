@@ -34,6 +34,7 @@ services:
       - REDIS_URL=redis://redis:6379
     networks:
       - monitoring-app
+      - anomaly-network
     links:
       - redis
     depends_on:
@@ -53,10 +54,10 @@ services:
       - database
     networks:
       - monitoring-app
-      - app-anomaly
+      - anomaly-network
 
 networks:
   monitoring-app:
     driver: bridge
-  app-anomaly:
+  anomaly-network:
     external: true
