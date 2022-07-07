@@ -7,6 +7,7 @@ import {
   ArrayMinSize,
   IsArray,
   ValidateNested,
+  Min,
 } from 'class-validator'
 import { UsecaseContract } from './usecaseContract'
 
@@ -119,6 +120,16 @@ class CreateExperimentParams {
   @IsArray({ message: 'Stages must be a array' })
   @ValidateNested({ each: true })
   stages: StageSetting[]
+
+  @IsString({ message: 'ImageName must be a string' })
+  imageName: string = ''
+
+  @IsInt({ message: 'Frequency must be a integer' })
+  @Min(500, {
+    message:
+      'Frequency must be greater than 500ms, less than 500ms is not allowed',
+  })
+  frequency: number = 1000
 }
 
 interface CreateExperimentUsecaseContract
