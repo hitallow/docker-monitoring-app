@@ -1,6 +1,7 @@
 import { ContainerStats } from '@src/domain'
 import { DockerServiceContract } from '@src/services/contracts'
 import { logger } from '@src/services/helpers/logger'
+import { ContainerIsStoppedError } from '@src/services/errors'
 import Docker from 'dockerode'
 
 export class DockerService implements DockerServiceContract {
@@ -81,7 +82,7 @@ export class DockerService implements DockerServiceContract {
       return { ...data }
     } catch (error) {
       logger.error('Erro desconhecido', error)
-      throw new Error()
+      throw new ContainerIsStoppedError()
     }
   }
 }
