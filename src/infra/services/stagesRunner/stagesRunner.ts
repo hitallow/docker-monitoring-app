@@ -92,9 +92,9 @@ export class StagesRunner implements StepsRunnerContract {
     })
   }
 
-  async execute(contianerName: string, step: StageSetting): Promise<void> {
+  async execute(containerName: string, step: StageSetting): Promise<void> {
     try {
-      this.baseURL = `http://${contianerName}:80`
+      this.baseURL = `http://${containerName}:80`
       const { type, setting } = step
       if (type === StagesTypes.NORMAL) {
         logger.info('EXECUTANDO CASO NORMAL')
