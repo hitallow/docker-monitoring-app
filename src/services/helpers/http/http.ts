@@ -27,4 +27,13 @@ export class HttpStatus {
       },
     } as HttpResponse
   }
+
+  static notFound(message: string): HttpResponse {
+    return {
+      statusCode: HttpStatusCode.NOT_FOUND,
+      body: {
+        message,
+      },
+    } as HttpResponse
+  }
 }
