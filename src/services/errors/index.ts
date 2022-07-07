@@ -1,3 +1,2 @@
-import { ExperimentNotFoundError } from './experimentNotFoundError'
-
-export { ExperimentNotFoundError }
+export { ExperimentNotFoundError } from './experimentNotFoundError'
+export { ContainerIsStoppedError } from './containerIsStoppedError'
