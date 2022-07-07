@@ -24,11 +24,19 @@ export class CreateExperimentUsecase
 
   async execute(params: CreateExperimentParams): Promise<HttpResponse> {
     try {
+      const defaultImageName = 'hitallow/anomaly-app'
+      const defaultFrequency = 1000
+      let { imageName, frequency } = params
+      if (!imageName) imageName = defaultImageName
+      if (!frequency) frequency = defaultFrequency
+
       const experiment = await this.experimentRepository.createExperiment({
         description: params.description,
         status: ExperimentEnum.CREATED,
         stages: params.stages,
         name: params.name,
+        frequency,
+        imageName,
       } as Experiment)
 
       logger.info(`Experiment ${experiment.id} created, starting monitoring`)
