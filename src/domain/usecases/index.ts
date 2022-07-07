@@ -11,5 +11,9 @@ export {
   StartMonitoringParams,
   StartMonitoringUsecaseContract,
 } from './startMonitoring'
-
+export {
+  LoadExperimentParams,
+  LoadExperimentResponse,
+  LoadExperimentUsecaseContract,
+} from './loadExperiments'
 export { ExecuteStageParams, ExecuteStageUsecaseContract } from './executeStage'
