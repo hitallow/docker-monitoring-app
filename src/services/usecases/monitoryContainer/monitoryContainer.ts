@@ -26,10 +26,11 @@ export class MonitoryContainerUsecase
   public async execute(params: MonitoryContainerParams): Promise<HttpResponse> {
     try {
       logger.info(`Adding stats to experiment ${params.experimentId}`)
-      const stats = await this.dockerService.getContainerStats(
-        params.containerId
-      )
-      this.experimentRepository.addStats(params.experimentId, stats)
+      this.dockerService.getContainerStats(params.containerId).then(stats => {
+        const statsIsEmpty = !stats || Object.keys(stats).length === 0
+        if (statsIsEmpty) return
+        this.experimentRepository.addStats(params.experimentId, stats)
+      })
 
       const experiment = await this.experimentRepository.getExperiment(
         params.experimentId

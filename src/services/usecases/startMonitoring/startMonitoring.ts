@@ -42,7 +42,7 @@ class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
     const containerName = `${experiment.name.split(' ').join('')}${
       experiment.id
     }`
-    const imageName = 'hitallow/anomaly-app'
+    const { imageName, frequency } = experiment
     const networks = ['anomaly-network']
 
     logger.info(
@@ -66,7 +66,7 @@ class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
       {
         containerId,
         experimentId,
-        frequency: 1000,
+        frequency,
       }
     )
 
@@ -75,10 +75,10 @@ class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
     await this.taskService.addTask<ExecuteStageParams>(
       Queues.EXECUTE_STAGE,
       {
-        experimentId,
-        stages: experiment.stages,
         containerId,
+        experimentId,
         containerName,
+        stages: experiment.stages,
       },
       {
         delay: 10000,

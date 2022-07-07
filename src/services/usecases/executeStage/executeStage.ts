@@ -29,13 +29,14 @@ export class ExecuteStageUsecase implements ExecuteStageUsecaseContract {
       const currentStage = stages.shift()
 
       if (!currentStage) {
-        logger.info('finishing execution of experiment')
+        logger.info('finishing execution of stages in this experiment')
         this.experimentRepository.updateExperiment(experimentId, {
           status: ExperimentEnum.FINISHED,
         })
       } else {
         logger.info('executing experiment')
         await this.stepRunner.execute(containerName, currentStage)
+        logger.info('finishing execution of experiment')
         this.taskService.addTask<ExecuteStageParams>(Queues.EXECUTE_STAGE, {
           containerName,
           experimentId,
