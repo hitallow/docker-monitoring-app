@@ -52,6 +52,8 @@ services:
     links:
       - redis
       - database
+    depends_on:
+      - database
     networks:
       - monitoring-app
       - anomaly-network
