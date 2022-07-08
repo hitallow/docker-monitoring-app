@@ -21,13 +21,18 @@ class ExperimentRepository implements ExperimentRepositoryContract {
   }
 
   public async getExperiment(id: string): Promise<Experiment> {
-    const experiment = await this.collection.findOne({
+    const experimentDb = await this.collection.findOne({
       _id: new ObjectId(id),
     })
-    if (!experiment) {
+    if (!experimentDb) {
       throw new ExperimentNotFoundError(id)
     }
-    return { ...experiment, id: experiment._id.toString() } as Experiment
+
+    return {
+      ...experimentDb,
+      id: experimentDb._id.toString(),
+      _id: undefined,
+    } as Experiment
   }
 
   async createExperiment(experiment: Experiment): Promise<Experiment> {
