@@ -36,4 +36,15 @@ export class HttpStatus {
       },
     } as HttpResponse
   }
+
+  static internalServerError(
+    message: string = 'Internal Server Error'
+  ): HttpResponse {
+    return {
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      body: {
+        message,
+      },
+    } as HttpResponse
+  }
 }
