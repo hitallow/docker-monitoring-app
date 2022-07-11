@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express'
+import { RequestHandler, Request } from 'express'
 
 import { UsecaseContract } from '@src/domain/usecases/usecaseContract'
 import { HttpError } from '@src/services/errors/httpError'
@@ -6,15 +6,20 @@ import { HttpStatusCode } from '@src/services/enums'
 import { logger } from '@src/services/helpers/logger'
 
 export function expressAdapter<T = any>(
-  factory: () => Promise<UsecaseContract<T>>
+  factory: () => Promise<UsecaseContract<T>>,
+  extractBody?: (req: Request) => Promise<T>
 ): RequestHandler {
   const fn: RequestHandler = async (req, res) => {
     try {
       const usecase = await factory()
       logger.info(`Request: ${req.method} ${req.url}`)
-      const result = await usecase.execute(req.body)
-      logger.info(`Response: ${result.statusCode}`)
-      return res.status(result.statusCode).json(result.body)
+      let requestBody
+      if (extractBody) requestBody = await extractBody(req)
+      else requestBody = req.body
+
+      const { statusCode, body } = await usecase.execute(requestBody)
+      logger.info(`Response: ${statusCode}`)
+      return res.status(statusCode).json(body)
     } catch (error) {
       if (error instanceof HttpError) {
         logger.error(`Response: ${error.statusCode}`)
