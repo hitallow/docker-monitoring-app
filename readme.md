@@ -31,6 +31,7 @@ de uma network externa que deve ser criada manualmente. Para cria-la basta execu
   docker network create anomaly-network
 ```
 Caso tenha preferencia, pode alterar a network. No entanto lembre-se de configurar o docker-compose e a conexão entre eles.
+Crie um arquivo chamado `.env` no root do projeto considerando as informações do `.env.exemple`, lá são setados as informações de conexão ao banco de dados.
 
 Depois essas configurações a aplicação já deve funcionar. agora basta buildar as imagens e executar junto com o docker-compose. Para isso execute
 
@@ -113,3 +114,10 @@ Os possíveis estágios do experimento incluem as seguintes configurações:
 | CPU_ANOMALY     | executa um aumento do uso de cpu do container                                     |
 | NETWORK_ANOMALY | executa um aumento do uso de network do container, podendo ser um input ou output |
 | MEMORY_ANOMALY  | executa um aumento do uso de memória do container                                 |
+
+Para testar se a aplicação está ouvindo, basta executar o seguinte curl:
+
+```shell
+curl --request GET \
+  --url http://localhost:3000/
+```
