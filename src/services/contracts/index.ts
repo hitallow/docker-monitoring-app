@@ -3,7 +3,10 @@ export { LoadContainerStatsContract } from './loadContainerStatsContract'
 export { LoadRunningContainersContract } from './loadRunningContainers'
 export { AnalysisEngineContract } from './analysisEngineContract'
 export { AnalyticalModelContract } from './analyticalModelContract'
-export { ExperimentRepositoryContract } from './experimentRepositoryContract'
+export {
+  ExperimentRepositoryContract,
+  GetParams,
+} from './experimentRepositoryContract'
 export { TaskServiceContract } from './tasksServiceContract'
 export { DockerServiceContract } from './dockerServiceContract'
 export { StepsRunnerContract } from './stepsRunnerContract'
