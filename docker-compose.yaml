@@ -26,6 +26,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime
       - ./src:/usr/project/worker/src
+      - ./.env:/usr/project/worker/.env
       - /var/run/docker.sock:/var/run/docker.sock
       - ./package.json:/usr/project/worker/package.json
       - ./package-lock.json:/usr/project/worker/package-lock.json
@@ -45,13 +46,14 @@ services:
     build: ./docker/api
     container_name: app
     volumes:
-      - /etc/localtime:/etc/localtime
-      - ./src:/usr/project/app/src
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./.env:/usr/project/app/.env
-      - ./package.json:/usr/project/app/package.json
-      - ./package-lock.json:/usr/project/app/package-lock.json
-      - ./tsconfig.json:/usr/project/app/tsconfig.json
+      - .:/usr/project/app
+      - /etc/localtime:/etc/localtime
+      # - ./src:/usr/project/app/src
+      # - ./.env:/usr/project/app/.env
+      # - ./package.json:/usr/project/app/package.json
+      # - ./package-lock.json:/usr/project/app/package-lock.json
+      # - ./tsconfig.json:/usr/project/app/tsconfig.json
     ports:
       - "3000:80"
     links:

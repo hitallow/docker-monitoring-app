@@ -36,6 +36,7 @@ export class LoadExperimentStatsUsecase
         stats,
       } as LoadExperimentStatsResponse)
     } catch (error) {
+      logger.info(error)
       if (error instanceof ExperimentNotFoundError) {
         return HttpStatus.notFound('Experiment not found')
       }
