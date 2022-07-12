@@ -6,6 +6,7 @@ import {
 import {
   ExperimentRepositoryContract,
   TaskServiceContract,
+  DockerServiceContract,
 } from '@src/services/contracts'
 import { Experiment } from '@src/domain/models'
 import { HttpResponse, HttpStatus } from '@src/services/helpers/http'
@@ -19,8 +20,14 @@ export class CreateExperimentUsecase
 
   constructor(
     readonly experimentRepository: ExperimentRepositoryContract,
+    readonly dockerService: DockerServiceContract,
     readonly taskService: TaskServiceContract
   ) {}
+
+  private async targetImageExists(imageName: string): Promise<boolean> {
+    const image = await this.dockerService.getImage(imageName)
+    return !!image
+  }
 
   async execute(params: CreateExperimentParams): Promise<HttpResponse> {
     try {
@@ -29,6 +36,13 @@ export class CreateExperimentUsecase
       let { imageName, frequency } = params
       if (!imageName) imageName = defaultImageName
       if (!frequency) frequency = defaultFrequency
+
+      const imageExists = await this.targetImageExists(imageName)
+
+      if (!imageExists)
+        return HttpStatus.notFound(
+          `Image ${imageName} not exists in this machine`
+        )
 
       const experiment = await this.experimentRepository.createExperiment({
         description: params.description,
