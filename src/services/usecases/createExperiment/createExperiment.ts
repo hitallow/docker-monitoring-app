@@ -39,11 +39,13 @@ export class CreateExperimentUsecase
 
       const imageExists = await this.targetImageExists(imageName)
 
-      if (!imageExists)
+      if (!imageExists) {
+        logger.info(`Image ${imageName} dont exists`)
         return HttpStatus.notFound(
           `Image ${imageName} not exists in this machine`
         )
-
+      }
+      logger.info('Image exists, starting configuration')
       const experiment = await this.experimentRepository.createExperiment({
         description: params.description,
         status: ExperimentEnum.CREATED,

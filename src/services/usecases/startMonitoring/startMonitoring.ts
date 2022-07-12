@@ -7,6 +7,7 @@ import {
 import {
   TaskServiceContract,
   DockerServiceContract,
+  SettingsRepositoryContract,
   ExperimentRepositoryContract,
 } from '@src/services/contracts'
 import { HttpResponse, HttpStatus } from '@src/services/helpers/http'
@@ -22,6 +23,7 @@ class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
   constructor(
     readonly taskService: TaskServiceContract,
     readonly dockerService: DockerServiceContract,
+    readonly settingsRepository: SettingsRepositoryContract,
     readonly experimentRepository: ExperimentRepositoryContract
   ) {}
 
@@ -36,6 +38,19 @@ class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
   public async execute(
     params: StartMonitoringParams
   ): Promise<HttpResponse<undefined>> {
+    const settings = await this.settingsRepository.getSettings()
+
+    if (settings.runningExperiments.length > 0) {
+      logger.info('already running experiment, waiting...')
+      await this.taskService.addTask<StartMonitoringParams>(
+        Queues.START_CONTAINER,
+        { ...params },
+        { delay: 10000 }
+      )
+
+      return HttpStatus.noContent()
+    }
+
     const { experimentId } = params
 
     const experiment = await this.loadExperiment(experimentId)
@@ -62,6 +77,8 @@ class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
       status: ExperimentEnum.RUNNING,
       startAt: currentTimestamp(),
     })
+
+    this.settingsRepository.addRunningExperiment(experiment.id)
 
     await this.taskService.addTask<MonitoryContainerParams>(
       Queues.MONITOR_CONTAINER,

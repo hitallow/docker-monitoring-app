@@ -5,6 +5,7 @@ import {
 import { logger } from '@src/services/helpers/logger'
 import {
   ExperimentRepositoryContract,
+  SettingsRepositoryContract,
   DockerServiceContract,
   TaskServiceContract,
 } from '@src/services/contracts'
@@ -21,6 +22,7 @@ export class MonitoryContainerUsecase
   public constructor(
     readonly taskService: TaskServiceContract,
     readonly dockerService: DockerServiceContract,
+    readonly settingsRepository: SettingsRepositoryContract,
     readonly experimentRepository: ExperimentRepositoryContract
   ) {}
 
@@ -52,6 +54,7 @@ export class MonitoryContainerUsecase
           endAt: currentTimestamp(),
         })
         this.dockerService.stopContainer(params.containerId)
+        this.settingsRepository.removeRunningExperiment(experiment.id)
       }
 
       return HttpStatus.noContent()
