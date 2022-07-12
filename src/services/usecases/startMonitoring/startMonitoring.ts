@@ -14,6 +14,7 @@ import { ExperimentEnum, HttpStatusCode, Queues } from '@src/services/enums'
 import { HttpError } from '@src/services/errors/httpError'
 import { Experiment } from '@src/domain'
 import { logger } from '@src/services/helpers/logger'
+import { currentTimestamp } from '@src/services/helpers/functions'
 
 class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
   name = 'StartMonitoringUsecase'
@@ -59,6 +60,7 @@ class StartMonitoringUsecase implements StartMonitoringUsecaseContract {
 
     this.experimentRepository.updateExperiment(experiment.id, {
       status: ExperimentEnum.RUNNING,
+      startAt: currentTimestamp(),
     })
 
     await this.taskService.addTask<MonitoryContainerParams>(

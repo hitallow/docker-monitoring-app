@@ -11,6 +11,7 @@ import {
 import { ExperimentEnum, HttpStatusCode, Queues } from '@src/services/enums'
 import { HttpResponse, HttpStatus } from '@src/services/helpers/http'
 import { HttpError } from '@src/services/errors/httpError'
+import { currentTimestamp } from '@src/services/helpers/functions'
 
 export class MonitoryContainerUsecase
   implements MonitoryContainerUsecaseContract
@@ -47,6 +48,9 @@ export class MonitoryContainerUsecase
         )
       } else {
         logger.info('monitoring finished with successful experiment')
+        this.experimentRepository.updateExperiment(params.experimentId, {
+          endAt: currentTimestamp(),
+        })
         this.dockerService.stopContainer(params.containerId)
       }
 
