@@ -1,5 +1,3 @@
-import { ContainerConfig } from './container_config'
-import { ContainerStats } from './container_stats'
-import { Experiment } from './experiment'
-
-export { ContainerConfig, ContainerStats, Experiment }
+export { ContainerConfig } from './container_config'
+export { ContainerStats } from './container_stats'
+export { Experiment } from './experiment'

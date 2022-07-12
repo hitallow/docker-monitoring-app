@@ -1,5 +1,3 @@
-import { ContainerStats } from './container_stats'
-
 export interface Experiment {
   id: string
   name: string
@@ -9,6 +7,6 @@ export interface Experiment {
   startAt: number
   endAt: number
   status: string
-  containerStats: ContainerStats[]
+  containerStats: any[]
   stages: any[]
 }
