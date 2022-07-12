@@ -63,6 +63,15 @@ export class DockerService implements DockerServiceContract {
     }
   }
 
+  public async getImage(imageId: string): Promise<any> {
+    try {
+      const image = await this.client.getImage(imageId).get()
+      return image
+    } catch (error) {
+      return null
+    }
+  }
+
   public async stopContainer(containerId: string): Promise<void> {
     try {
       const container = this.client.getContainer(containerId)
