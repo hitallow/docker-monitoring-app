@@ -1,3 +1,3 @@
 export interface Settings {
-  runningExperiments: number
+  runningExperiments: string[]
 }
